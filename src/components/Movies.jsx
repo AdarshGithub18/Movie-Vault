@@ -3,7 +3,7 @@ import MovieCards from './MovieCards';
 import axios from 'axios';
 import { FaArrowRightLong } from 'react-icons/fa6';
 import { FaArrowLeft } from 'react-icons/fa6';
-
+const myApiKey = import.meta.env.VITE_API_KEY;
 const Movies = () => {
   const [movies, setMovies] = useState([]);
   const [pages, setPages] = useState(1);
@@ -20,12 +20,12 @@ const Movies = () => {
   useEffect(() => {
     axios
       .get(
-        `https://api.themoviedb.org/3/movie/popular?api_key=1405cfdcc49c4ef45a5b986019f2083b&language=en-US&page=${pages}
+        `https://api.themoviedb.org/3/movie/popular?api_key=${myApiKey}&language=en-US&page=${pages}
 `
       )
       .then((res) => setMovies(res.data.results));
   }, [pages]);
-  console.log(movies);
+  // console.log(movies);
 
   return (
     <>
