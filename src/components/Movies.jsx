@@ -4,7 +4,12 @@ import axios from 'axios';
 import { FaArrowRightLong } from 'react-icons/fa6';
 import { FaArrowLeft } from 'react-icons/fa6';
 const myApiKey = import.meta.env.VITE_API_KEY;
-const Movies = () => {
+
+const Movies = ({
+  handleAddWatchlist,
+  handleRemoveFromWatchlist,
+  watchlist,
+}) => {
   const [movies, setMovies] = useState([]);
   const [pages, setPages] = useState(1);
 
@@ -37,8 +42,13 @@ const Movies = () => {
           {movies.map((movieItem, index) => {
             return (
               <MovieCards
+                key={movieItem.id}
                 posterPath={movieItem.poster_path}
                 title={movieItem.original_title}
+                handleAddWatchlist={handleAddWatchlist}
+                movieItem={movieItem}
+                handleRemoveFromWatchlist={handleRemoveFromWatchlist}
+                watchlist={watchlist}
               />
             );
           })}
