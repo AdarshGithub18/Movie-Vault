@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { IoSearch } from 'react-icons/io5';
 
 const WatchList = ({ watchlist }) => {
+  const [search, setSearch] = useState('');
+
+  let handleSearch = (e) => {
+    setSearch(e.target.value);
+  };
   return (
     <>
+      {/* genre sections */}
       <div className="genre-divs flex justify-center m-10 gap-4 ">
         <div className="bg-[#F5C518] font-semibold p-2  rounded-sm h-9  w-24 justify-center items-center flex">
           Thriller
@@ -13,14 +19,19 @@ const WatchList = ({ watchlist }) => {
         </div>
       </div>
 
+      {/* search input */}
       <div className="movie-search flex justify-center my-10 w-full ">
         <input
           type="text"
           placeholder="Search Movies"
           className="w-[39rem] outline-none h-[2.5rem] rounded-sm px-5 items-center"
+          onChange={handleSearch}
+          value={search}
         />
       </div>
-      <div className="rounded-sm overflow-hidden m-8">
+
+      {/* table section */}
+      <div className="rounded-sm overflow-hidden m-8 flex flex-wrap">
         <table className="w-full text-center border-2 border-[#161616]">
           <thead className="border-2 border-[#161616]">
             <tr className="text-[#F5C518]">
@@ -31,28 +42,34 @@ const WatchList = ({ watchlist }) => {
             </tr>
           </thead>
           <tbody className="text-white">
-            {watchlist.map((movie, index) => {
-              return (
-                <>
-                  <tr className="border-2 border-[#161616]" key={movie.id}>
-                    <td className="flex items-center px-4 py-6 ">
-                      <img
-                        className="h-35 w-28 rounded-md"
-                        src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path})`}
-                        alt="movie-poster"
-                      />
-                      <div className="mx-10 text-2xl font-semibold">
-                        {movie.original_title}
-                      </div>
-                    </td>
-                    <td>{movie.vote_average}</td>
-                    <td>{Math.floor(movie.popularity)}</td>
-                    <td> </td>
-                    <td className="text-red-600">Remove</td>
-                  </tr>
-                </>
-              );
-            })}
+            {watchlist
+              .filter((movie) => {
+                return movie.original_title
+                  .toLowerCase()
+                  .includes(search.toLocaleLowerCase());
+              })
+              .map((movie, index) => {
+                return (
+                  <>
+                    <tr className="border-2 border-[#161616]" key={movie.id}>
+                      <td className="flex items-center px-4 py-6 ">
+                        <img
+                          className="h-35 w-28 rounded-md"
+                          src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path})`}
+                          alt="movie-poster"
+                        />
+                        <div className="mx-10 text-2xl font-semibold">
+                          {movie.original_title}
+                        </div>
+                      </td>
+                      <td>{movie.vote_average}</td>
+                      <td>{Math.floor(movie.popularity)}</td>
+                      <td> </td>
+                      <td className="text-red-600">Remove</td>
+                    </tr>
+                  </>
+                );
+              })}
           </tbody>
         </table>
       </div>
