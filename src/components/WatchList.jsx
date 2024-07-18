@@ -1,12 +1,23 @@
 import React, { useState } from 'react';
-import { IoSearch } from 'react-icons/io5';
+import { FaArrowUpLong } from 'react-icons/fa6';
+import { FaArrowDownLong } from 'react-icons/fa6';
+import genreId from '../utility';
 
-const WatchList = ({ watchlist }) => {
+const WatchList = ({ watchlist, setWatchlist }) => {
   const [search, setSearch] = useState('');
 
   let handleSearch = (e) => {
     setSearch(e.target.value);
   };
+
+  let handleDelete = (id) => {
+    let updatedWatchlist = watchlist.filter((movie) => {
+      return movie.id != id;
+    });
+    setWatchlist(updatedWatchlist);
+    localStorage.setItem('movies', JSON.stringify(updatedWatchlist));
+  };
+
   return (
     <>
       {/* genre sections */}
@@ -32,16 +43,26 @@ const WatchList = ({ watchlist }) => {
 
       {/* table section */}
       <div className="rounded-sm overflow-hidden m-8 flex flex-wrap">
-        <table className="w-full text-center border-2 border-[#161616]">
+        <table className="w-full  text-center border-2 border-[#161616]">
           <thead className="border-2 border-[#161616]">
             <tr className="text-[#F5C518]">
               <th>Name</th>
-              <th>Rating</th>
+              <div className="flex gap-3 items-center justify-center">
+                <div className="cursor-pointer">
+                  <FaArrowUpLong />
+                </div>
+                <th>Rating</th>
+                <div className="cursor-pointer">
+                  <FaArrowDownLong />
+                </div>
+              </div>
+
               <th>Popularity</th>
               <th>Genre</th>
             </tr>
           </thead>
           <tbody className="text-white">
+            {/* filter is use for search filter */}
             {watchlist
               .filter((movie) => {
                 return movie.original_title
@@ -64,8 +85,13 @@ const WatchList = ({ watchlist }) => {
                       </td>
                       <td>{movie.vote_average}</td>
                       <td>{Math.floor(movie.popularity)}</td>
-                      <td> </td>
-                      <td className="text-red-600">Remove</td>
+                      <td>{genreId[movie.genre_ids[0]]}</td>
+                      <td
+                        onClick={() => handleDelete(movie.id)}
+                        className="text-red-600 cursor-pointer"
+                      >
+                        Remove
+                      </td>
                     </tr>
                   </>
                 );
