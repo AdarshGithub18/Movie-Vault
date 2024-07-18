@@ -1,15 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaArrowUpLong } from 'react-icons/fa6';
 import { FaArrowDownLong } from 'react-icons/fa6';
 import genreId from '../utility';
 
 const WatchList = ({ watchlist, setWatchlist }) => {
   const [search, setSearch] = useState('');
+  const [genrelist, setGenreList] = useState(['All Genre']);
+  const [currentGenre, setCurrentGenre] = useState(
+    localStorage.getItem('currentGenre') || 'All Genre'
+  );
 
+  // handeling the current genre
+  const handleCurrentGenre = (genre) => {
+    setCurrentGenre(genre);
+  };
+
+  // for search filter
   let handleSearch = (e) => {
     setSearch(e.target.value);
   };
 
+  // for deleting movies from watchlist
   let handleDelete = (id) => {
     let updatedWatchlist = watchlist.filter((movie) => {
       return movie.id != id;
@@ -18,16 +29,34 @@ const WatchList = ({ watchlist, setWatchlist }) => {
     localStorage.setItem('movies', JSON.stringify(updatedWatchlist));
   };
 
+  // to update genres by changing watchlist
+  useEffect(() => {
+    let temp = watchlist.map((movies) => {
+      return genreId[movies.genre_ids[0]];
+    });
+    // set is use to set only unique values in the genre tabs
+    temp = new Set(temp);
+    setGenreList(['All Genre', ...temp]);
+  }, [watchlist]);
+
   return (
     <>
       {/* genre sections */}
       <div className="genre-divs flex justify-center m-10 gap-4 ">
-        <div className="bg-[#F5C518] font-semibold p-2  rounded-sm h-9  w-24 justify-center items-center flex">
-          Thriller
-        </div>{' '}
-        <div className="border-2 border-[#F5C518] text-[#F5C518] font-semibold p-2  rounded-sm h-9  w-24 justify-center items-center flex">
-          Thriller
-        </div>
+        {genrelist.map((genre) => {
+          return (
+            <div
+              onClick={() => handleCurrentGenre(genre)}
+              className={
+                currentGenre == genre
+                  ? 'bg-[#F5C518] font-semibold p-2  rounded-sm h-9  justify-center items-center flex w-fit'
+                  : 'border-2 border-[#F5C518] text-[#F5C518] font-semibold p-2  rounded-sm h-9  justify-center items-center flex w-fit'
+              }
+            >
+              {genre}
+            </div>
+          );
+        })}
       </div>
 
       {/* search input */}
@@ -64,6 +93,13 @@ const WatchList = ({ watchlist, setWatchlist }) => {
           <tbody className="text-white">
             {/* filter is use for search filter */}
             {watchlist
+              .filter((movie) => {
+                if (currentGenre == 'All Genre') {
+                  return true;
+                } else {
+                  return genreId[movie.genre_ids[0]] == currentGenre;
+                }
+              })
               .filter((movie) => {
                 return movie.original_title
                   .toLowerCase()
