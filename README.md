@@ -17,6 +17,6 @@ This project is a movie watchlist application built using React and Tailwind CSS
 - Axios for API requests
 - React Router for navigation
 
-##Screenshots
+## Screenshots
 ![Home](https://github.com/user-attachments/assets/64f33914-e06b-4d47-a431-32fbe1a9fe94)
 ![Watchlist](https://github.com/user-attachments/assets/05c6c4e6-cd0c-4a4a-8c54-211157c9ccb2)
