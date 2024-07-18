@@ -7,4 +7,3 @@ This project is a React application that fetches and displays trending movies us
 - Fetches trending movies from the TMDb API.
 - Displays movie posters and titles.
 - Implements pagination to navigate through the pages of trending movies.
-- Responsive design using Tailwind CSS.
