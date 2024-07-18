@@ -18,5 +18,5 @@ This project is a movie watchlist application built using React and Tailwind CSS
 - React Router for navigation
 
 ##Screenshots
-`./screenshots/Home.png`
-`./screenshots/Watchlist.png`
+`./screenshot/Home.png`
+`./screenshot/Watchlist.png`
