@@ -1,4 +1,3 @@
-import './App.css';
 import Navbar from './components/Navbar';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Movies from './components/Movies';
@@ -25,15 +24,14 @@ function App() {
     }
   }, []);
 
+  // handeling removing movies from watchlist
   const handleRemoveFromWatchlist = (movieItem) => {
     let filteredMovies = watchlist.filter((movie) => {
       return movie.id !== movieItem.id;
     });
-
     setWatchlist(filteredMovies);
-    // console.log(watchlist);
   };
-  // console.log(watchlist);
+
   return (
     <>
       <BrowserRouter>
